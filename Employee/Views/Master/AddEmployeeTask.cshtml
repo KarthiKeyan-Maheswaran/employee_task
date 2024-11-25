@@ -1,0 +1,101 @@
+﻿@model ViewModelLayers.EmployeeTaskViewModel
+@{
+    ViewBag.Title = "AddEmployeeTask";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+
+<div class="container-fluid">
+    <div class="card border">
+        <h5 class="card-header">Create EmployeeTask</h5>
+        <div class="card-body">
+            @using (Html.BeginForm("AddEmployeeTask", "Master", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                if (Model.EmployeeTask.TaskID > 0)
+                {
+                    @Html.HiddenFor(model => model.EmployeeTask.TaskID)
+                    @Html.HiddenFor(model => model.EmployeeTask.CreatedOn)
+                }
+
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="row g-3">
+
+
+
+
+
+                            @if (Session["IsAdmin"]?.ToString() == "True")
+                            {<div class="col-lg-3 has-danger">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.Employees, new { @class = "form-label" })
+                                        @Html.DropDownListFor(
+                                            m => m.EmployeeTask.EmployeeCode,
+                                            new SelectList(Model.Employees, "EmployeeCode", "EmployeeName"),
+                                            "Select Employee", new
+                                            {
+                                                @class = "form-control"
+                                            }
+                                            )
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(model => model.EmployeeTask.EmployeeCode)
+                            }
+
+
+
+
+
+
+
+                            <div class="col-lg-3 has-danger">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.EmployeeTask.TaskName, new { @class = "form-label" })
+                                    @Html.TextBoxFor(model => model.EmployeeTask.TaskName, new { @class = "form-control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(model => model.EmployeeTask.TaskName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3 has-danger">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.EmployeeTask.TaskStatus, new { @class = "form-label" })
+                                    @Html.DropDownListFor(model => model.EmployeeTask.TaskStatus, new SelectList(new[]
+                                        {
+
+                                            new { Value = "Pending", Text = "Pending" },
+                                            new { Value = "Need to Discuss", Text = "Need to Discuss" },
+                                              new { Value = "Completed", Text = "Completed" }
+                                        }, "Value", "Text"),
+                                        new { @class = "form-control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(model => model.EmployeeTask.TaskStatus, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3 has-danger">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.EmployeeTask.TaskDescription, new { @class = "form-label" })
+                                    @Html.TextAreaFor(model => model.EmployeeTask.TaskDescription, new { @class = "form-control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(model => model.EmployeeTask.TaskDescription, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <input type="submit" value="Submit" class="btn btn-primary" />
+                                @Html.ActionLink("Back", "EmployeeTask", null, new { @class = "btn btn-secondary" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,61 @@
+﻿@model ViewModelLayers.EmployeeViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+<body>
+
+    <div class="wrapper">
+        <header>Login</header>
+
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+        {
+            //@Html.ValidationSummary()
+            @Html.AntiForgeryToken()
+
+            <div class="field email">
+                <div class="input-area">
+                    @Html.TextBoxFor(m => m.EmployeeLogin.EmployeeCode, "", new { @placeholder = "EmployeeCode", @autocomplete = "off" })
+                    @Html.ValidationMessageFor(m => m.EmployeeLogin.EmployeeCode, "", new { @style = "color:red;" })
+                    <i class="icon fas fa-user"></i>
+                    <i class="error error-icon fas fa-exclamation-circle"></i>
+                </div>
+                <div class="error error-txt">Email can't be blank</div>
+            </div>
+            <div class="field password">
+                <div class="input-area">
+                    @Html.PasswordFor(m => m.EmployeeLogin.Password, new { @placeholder = "Password", @autocomplete = "off" })
+                    @Html.ValidationMessageFor(m => m.EmployeeLogin.Password, "", new { @style = "color:red;" })
+                    <i class="icon fas fa-lock"></i>
+                    <i class="error error-icon fas fa-exclamation-circle"></i>
+                </div>
+                <div class="error error-txt">Password can't be blank</div>
+            </div>
+
+            <input type="submit" name="submit" value="Login" />
+        }
+        @*<div class="sign-txt">Not yet member? <a href="#">Signup now</a></div>*@
+    </div>
+
+    <!-- Or use RenderPartial -->
+
+
+    <script src="~/assets/jquery/jquery.min.js"></script>
+    <script src="~/Scripts/jquery.validate-vsdoc.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+</body>
+</html>

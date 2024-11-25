@@ -1,0 +1,90 @@
+﻿@model ViewModelLayers.EmployeeTaskViewModel
+@{
+    ViewData["Title"] = "EmployeeTask";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <div class="card border">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">EmployeeTask List</h5>
+                    @if (Session["IsAdmin"].ToString() =="True")
+                    {<a href="@Url.Action("AddEmployeeTask", "Master")" class="btn btn-primary">
+                            <i class="bi bi-plus-circle pe-2"></i>ADD
+                        </a>
+                    }
+
+                </div>
+                <div class="card-body">
+                    <table class="ui celled table" style="width:100%" id="tableEmployeeTask">
+                        <thead>
+                            <tr>
+                                <th>Task ID</th>
+                                <th>Task Name</th>
+                                <th>Employee Code</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var EmployeeTask in Model.AllEmployeeTasks)
+                            {
+                                <tr>
+                                    <td>@EmployeeTask.TaskID</td>
+                                    <td>@EmployeeTask.TaskName</td>
+                                    <td>@EmployeeTask.EmployeeCode</td>
+                                    <td>@EmployeeTask.TaskStatus</td>
+                                    <td>
+                                        <a href="@Url.Action("AddEmployeeTask",new { EmployeeTaskCode = @EmployeeTask.TaskID })" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i>Edit</a>
+
+                                        @if (Session["IsAdmin"].ToString() == "True")
+                                        {
+
+                                            <a href="@Url.Action("DeleteEmployeTask", new { EmployeeTaskid = @EmployeeTask.TaskID })" onclick="return confirm('Are you sure want to delete this EmployeeTask?')" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i>Delete</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/assets/jquery/jquery.js"></script>
+
+<script type="text/javascript">
+    function GridviewIntialize() {
+        try {
+            if ($.fn.DataTable.isDataTable('#tableEmployeeTask')) {
+                $('#tableEmployeeTask').DataTable().destroy();
+            }
+
+            $('#tableEmployeeTask').DataTable({
+                "bPaginate": true,
+                "bLengthChange": false,
+                "bFilter": true,
+                "bInfo": true,
+                "bsort": true,
+                "bordering": true,
+                "iDisplayLength": 5,
+                "aaSorting": [],
+                "bAutoWidth": false
+            });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    }
+
+    $(document).ready(function () {
+        GridviewIntialize();
+    });
+
+</script>
+
